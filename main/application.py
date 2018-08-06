@@ -3,7 +3,7 @@
 from flask import Flask
 from .blueprints import register
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder = '../templates')
 register(app)
 
 @app.route('/hello')
