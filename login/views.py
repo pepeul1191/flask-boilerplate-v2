@@ -125,3 +125,17 @@ def acceder():
     'jss': index_js(),
   }
   return render_template('login/index.html', locals = locals), 500
+
+@login_view.route('/ver', methods=['GET'])
+def ver():
+    rpta = ''
+    if not session['usuario']:
+      rpta = '<h1>El usuario no se encuentra logueado</h1>'
+    else:
+      rpta = '<h1>Usuario Logeado</h1><ul><li>' + str(session['usuario']) + '</li><li>' +  str(session['tiempo']) + '</li><li>' + str(session['estado']) + '</li></ul>'
+    return rpta
+
+@login_view.route('/salir', methods=['GET'])
+def salir():
+  session.clear()
+  return redirect('/login')
