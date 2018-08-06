@@ -4,11 +4,13 @@ import requests
 import datetime
 from flask import Blueprint, render_template, request, session, redirect
 from main.constants import constants
+from main.middlewares import session_false, session_true
 from .helpers import index_css, index_js
 
 login_view = Blueprint('login_view', __name__)
 
 @login_view.route('/login', methods=['GET'])
+@session_false
 def index():
   locals = {
     'title': 'Bienvenido',
@@ -127,6 +129,7 @@ def acceder():
   return render_template('login/index.html', locals = locals), 500
 
 @login_view.route('/ver', methods=['GET'])
+@session_true
 def ver():
     rpta = ''
     if not session['usuario']:
