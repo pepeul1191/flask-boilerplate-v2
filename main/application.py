@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, session
+from flask import Flask, session, redirect
 from .blueprints import register
 from .constants import constants
 from .templates import load_css, load_js
@@ -24,6 +24,11 @@ def utility_processor():
 @app.route('/hello')
 def hello_world():
   return 'Hello, World???!'
+# una ruta de errorhandler
+@app.errorhandler(404)
+def not_found(e):
+  print(e)
+  return redirect('/error/access/404')
 #setear cabeceras
 @app.after_request
 def apply_caching(response):
