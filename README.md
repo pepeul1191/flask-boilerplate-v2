@@ -1,4 +1,4 @@
-## Python3 Tornado Boilerplate
+## Python3 Flask Boilerplate
 
 Requisitos de software previamente instalado:
 
