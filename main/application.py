@@ -5,7 +5,12 @@ from .blueprints import register
 from .constants import constants
 from .templates import load_css, load_js
 
-app = Flask(__name__, template_folder = '../templates', )
+app = Flask(
+  __name__,
+  template_folder = '../templates',
+  static_folder='../static',
+  static_url_path='/static'
+)
 register(app)
 
 @app.context_processor

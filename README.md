@@ -32,6 +32,7 @@ Migraciones con DBMATE:
 + http://flask.pocoo.org/docs/0.12/quickstart/
 + http://werkzeug.pocoo.org/docs/0.14/datastructures/#werkzeug.datastructures.FileStorage
 + http://flask.pocoo.org/docs/0.12/templating/
++ https://stackoverflow.com/questions/4239825/static-files-in-flask-robot-txt-sitemap-xml-mod-wsgi
 
 Thanks/Credits
 
