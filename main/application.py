@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, session, redirect
+import json
+from flask import Flask, session, redirect, request
 from .blueprints import register
 from .constants import constants
 from .templates import load_css, load_js
@@ -27,8 +28,21 @@ def hello_world():
 # una ruta de errorhandler
 @app.errorhandler(404)
 def not_found(e):
-  print(e)
-  return redirect('/error/access/404')
+  if request.method == 'GET':
+    extensions_to_check = ['.css', '.js', '.woff', 'png', ]
+    if any(ext in request.url for ext in extensions_to_check):
+      pass
+    else:
+      return redirect('/error/access/404')
+  else:
+    error = {
+      'tipo_mensaje': 'error',
+      'mensaje': [
+        'Recurso no disponible',
+        'Error 404'
+      ],
+    }
+    return json.dumps(error), 404
 #setear cabeceras
 @app.after_request
 def apply_caching(response):

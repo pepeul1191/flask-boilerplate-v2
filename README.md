@@ -33,6 +33,7 @@ Migraciones con DBMATE:
 + http://werkzeug.pocoo.org/docs/0.14/datastructures/#werkzeug.datastructures.FileStorage
 + http://flask.pocoo.org/docs/0.12/templating/
 + https://stackoverflow.com/questions/4239825/static-files-in-flask-robot-txt-sitemap-xml-mod-wsgi
++ https://stackoverflow.com/questions/6531482/how-to-check-if-a-string-contains-an-element-from-a-list-in-python
 
 Thanks/Credits
 
