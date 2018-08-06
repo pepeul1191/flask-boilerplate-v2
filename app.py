@@ -10,6 +10,11 @@ app.register_blueprint(home)
 def hello_world():
   return 'Hello, World???!'
 
+@app.after_request
+def apply_caching(response):
+  response.headers['Server'] = 'Werkzeug/0.14.1 Python/3.5.2; Ubuntu;'
+  return response
+
 if __name__ == '__main__':
 	#app.secret_key = constants['key']
 	app.config['SESSION_TYPE'] = 'filesystem'
