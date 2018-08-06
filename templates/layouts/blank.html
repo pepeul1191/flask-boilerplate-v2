@@ -8,9 +8,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   {% block css %}{% endblock %}
   {% block js_top %}{% endblock %}
+  {{ load_css(locals['csss'])|safe }}
 </head>
 <body>
 	{% block content %}{% endblock %}
   {% block js_bottom %}{% endblock %}
+  {{ load_js(locals['jss'])|safe }}
 </body>
 </html>

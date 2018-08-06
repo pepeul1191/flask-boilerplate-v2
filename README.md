@@ -31,6 +31,7 @@ Migraciones con DBMATE:
 + https://pypi.python.org/pypi/pysftp
 + http://flask.pocoo.org/docs/0.12/quickstart/
 + http://werkzeug.pocoo.org/docs/0.14/datastructures/#werkzeug.datastructures.FileStorage
++ http://flask.pocoo.org/docs/0.12/templating/
 
 Thanks/Credits
 
