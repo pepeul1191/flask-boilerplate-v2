@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask
-from home.views import home
+from .blueprints import register
 
 app = Flask(__name__)
-app.register_blueprint(home)
+register(app)
 
 @app.route('/hello')
 def hello_world():
