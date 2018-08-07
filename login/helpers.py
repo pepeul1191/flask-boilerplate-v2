@@ -16,7 +16,7 @@ def index_css():
 def index_js():
   switcher = {
     'desarrollo': [
-      'dist/bundle',
+      #'dist/bundle',
     ],
     'produccion': [],
   }
