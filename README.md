@@ -20,10 +20,10 @@ Arrancar servidor Torando
     $ pip install -r requirements.txt
     $ python app.py
 
-Migraciones con DBMATE:
+Migraciones con DBMATE - ubicaciones:
 
     $ dbmate -d "db/migrations" -e "DATABASE_URL" new <<nombre_de_migracion>>
-    $ dbmate -d "db/migrations" up
+    $ dbmate -d "ubicaciones/migrations" -e "DATABASE_UBICACIONES" up
 
 ### Fuentes
 
