@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from flask import session, redirect
+from flask import session, redirect, request
 from .constants import constants
 
 def headers(fn):
@@ -29,8 +29,8 @@ def check_csrf(fn):
     if constants['ambiente_csrf'] == 'activo':
       continuar = True
       mensaje = []
-      if request.get_header(constants['CSRF']['key']) != None:
-        if request.get_header(constants['CSRF']['key']) != constants['CSRF']['secret']:
+      if request.headers.get(constants['csrf']['key']) != None:
+        if request.headers.get(constants['csrf']['key']) != constants['csrf']['secret']:
           continuar = False
           mensaje = [
             'No se puede acceder al recurso',

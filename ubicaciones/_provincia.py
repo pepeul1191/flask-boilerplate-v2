@@ -10,7 +10,7 @@ from main.middlewares import check_csrf
 provincia_routes = Blueprint('provincia_routes', __name__)
 
 @provincia_routes.route('/ubicaciones/provincia/listar/<int:departamento_id>', methods=['GET'])
-#@check_csrf
+@check_csrf
 def listar(departamento_id):
   rpta = None
   status = 200
@@ -31,7 +31,7 @@ def listar(departamento_id):
   return json.dumps(rpta), status
 
 @provincia_routes.route('/ubicaciones/provincia/guardar', methods=['POST'])
-#@check_csrf
+@check_csrf
 def guardar():
   status = 200
   data = json.loads(request.form['data'])

@@ -10,7 +10,7 @@ from main.middlewares import check_csrf
 distrito_routes = Blueprint('distrito_routes', __name__)
 
 @distrito_routes.route('/ubicaciones/distrito/listar/<int:provincia_id>', methods=['GET'])
-#@check_csrf
+@check_csrf
 def listar(provincia_id):
   rpta = None
   status = 200
@@ -31,7 +31,7 @@ def listar(provincia_id):
   return json.dumps(rpta), status
 
 @distrito_routes.route('/ubicaciones/distrito/guardar', methods=['POST'])
-#@check_csrf
+@check_csrf
 def guardar():
   status = 200
   data = json.loads(request.form['data'])
@@ -83,7 +83,7 @@ def guardar():
   return json.dumps(rpta), status
 
 @distrito_routes.route('/ubicaciones/distrito/buscar', methods=['GET'])
-#@check_csrf
+@check_csrf
 def buscar():
   rpta = None
   status = 200
@@ -105,7 +105,7 @@ def buscar():
   return json.dumps(rpta), status
 
 @distrito_routes.route('/ubicaciones/distrito/nombre/<int:distrito_id>', methods=['GET'])
-#@check_csrf
+@check_csrf
 def nombre(distrito_id):
   rpta = None
   status = 200
