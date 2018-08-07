@@ -35,6 +35,7 @@ Migraciones con DBMATE - ubicaciones:
 + https://stackoverflow.com/questions/4239825/static-files-in-flask-robot-txt-sitemap-xml-mod-wsgi
 + https://stackoverflow.com/questions/6531482/how-to-check-if-a-string-contains-an-element-from-a-list-in-python
 + https://stackoverflow.com/questions/29386995/how-to-get-http-headers-in-flask
++ http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/
 
 Thanks/Credits
 

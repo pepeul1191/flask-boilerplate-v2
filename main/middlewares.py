@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+from functools import wraps
 from flask import session, redirect, request
 from .constants import constants
 
 def headers(fn):
+  @wraps(fn)
   def _headers(*args, **kwargs):
     #response.headers['Server'] = 'Ubuntu;WSGIServer/0.2;CPython/3.5.2'
     return fn(*args, **kwargs)
   return _headers
 
 def enable_cors(fn):
+  @wraps(fn)
   def _enable_cors(*args, **kwargs):
     """
     # set CORS headers
@@ -24,6 +27,7 @@ def enable_cors(fn):
   return _enable_cors
 
 def check_csrf(fn):
+  @wraps(fn)
   def _check_csrf(*args, **kwargs):
     #si csrf en el header NO coincide
     if constants['ambiente_csrf'] == 'activo':
@@ -55,6 +59,7 @@ def check_csrf(fn):
   return _check_csrf
 
 def session_false(fn):
+  @wraps(fn)
   def _session_false(*args, **kwargs):
     #si la session es activaa, vamos a '/accesos/'
     if constants['ambiente_session'] == 'activo':
@@ -68,6 +73,7 @@ def session_false(fn):
   return _session_false
 
 def session_true(fn):
+  @wraps(fn)
   def _session_true(*args, **kwargs):
     #si la session es activaa, vamos a '/accesos/'
     if constants['ambiente_session'] == 'activo':
