@@ -14,7 +14,7 @@ En caso de usar el servicio en python:
     $ cd <<nombre_ambiente>>
     $ source bin/activate
 
-Arrancar servidor Torando
+Arrancar servidor Werkzeug
 
     $ cd <<carpeta-proyecto>>
     $ pip install -r requirements.txt
@@ -22,7 +22,7 @@ Arrancar servidor Torando
 
 Migraciones con DBMATE - ubicaciones:
 
-    $ dbmate -d "db/migrations" -e "DATABASE_URL" new <<nombre_de_migracion>>
+    $ dbmate -d "ubicaciones/migrations" -e "DATABASE_UBICACIONES" new <<nombre_de_migracion>>
     $ dbmate -d "ubicaciones/migrations" -e "DATABASE_UBICACIONES" up
 
 ### Fuentes
@@ -34,6 +34,7 @@ Migraciones con DBMATE - ubicaciones:
 + http://flask.pocoo.org/docs/0.12/templating/
 + https://stackoverflow.com/questions/4239825/static-files-in-flask-robot-txt-sitemap-xml-mod-wsgi
 + https://stackoverflow.com/questions/6531482/how-to-check-if-a-string-contains-an-element-from-a-list-in-python
++ https://stackoverflow.com/questions/29386995/how-to-get-http-headers-in-flask
 
 Thanks/Credits
 
