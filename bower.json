@@ -23,6 +23,6 @@
     "tests"
   ],
   "dependencies": {
-    "swp-backbone": "^1.0.3"
+    "swp-backbone": "^2.0.0"
   }
 }

@@ -7,7 +7,7 @@ constants = {
     'secret': 'holamundojejejojo18927389127389123'
   },
   'ambiente_static' : 'desarrollo',
-  'ambiente_session' : 'activo',
+  'ambiente_session' : 'inactivo',
   'ambiente_csrf' : 'activo',
   'ambiente_500' : 'activo',
   'ambiente_error_handler' : 'inactivo',
