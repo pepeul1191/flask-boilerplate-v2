@@ -34,6 +34,11 @@ Migraciones con DBMATE - ubicaciones:
     $ dbmate -d "ubicaciones/migrations" -e "DATABASE_UBICACIONES" new <<nombre_de_migracion>>
     $ dbmate -d "ubicaciones/migrations" -e "DATABASE_UBICACIONES" up
 
+Migraciones con DBMATE - accesos:
+
+    $ dbmate -d "accesos/migrations" -e "DATABASE_ACCESOS" new <<nombre_de_migracion>>
+    $ dbmate -d "accesos/migrations" -e "DATABASE_ACCESOS" up
+
 ### Fuentes
 
 + https://github.com/pepeul1191/python-gestion
