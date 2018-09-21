@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from bottle import Bottle, request, HTTPResponse
-from config.models import Subtitulo
+from flask import Blueprint, request
 from sqlalchemy.sql import select
-from config.middleware import enable_cors, headers, check_csrf
-from config.database import engine, session_db
-from config.constants import constants
+from main.databases import engine_accesos, session_accesos
+from .models import Subtitulo
+from main.middlewares import check_csrf
 
-subtitulo_view = Bottle()
+subtitulo_routes = Blueprint('subtitulo_routes', __name__)
 
-@subtitulo_view.route('/listar/<modulo_id>', method='GET')
-@enable_cors
-@headers
+@subtitulo_routes.route('/accesos/subtitulo/listar/<int:modulo_id>', methods=['GET'])
 @check_csrf
 def listar(modulo_id):
   rpta = None
   status = 200
   try:
-    conn = engine.connect()
+    conn = engine_accesos.connect()
     stmt = select([Subtitulo]).where(Subtitulo.modulo_id == modulo_id)
     rs = conn.execute(stmt)
     rpta = [dict(r) for r in conn.execute(stmt)]
@@ -31,22 +28,20 @@ def listar(modulo_id):
       ],
     }
     status = 500
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
-@subtitulo_view.route('/guardar', method='POST')
-@enable_cors
-@headers
+@subtitulo_routes.route('/accesos/subtitulo/guardar', methods=['POST'])
 @check_csrf
 def guardar():
   status = 200
-  data = json.loads(request.forms.get('data'))
+  data = json.loads(request.form['data'])
   nuevos = data['nuevos']
   editados = data['editados']
   eliminados = data['eliminados']
   modulo_id = data['extra']['modulo_id']
   array_nuevos = []
   rpta = None
-  session = session_db()
+  session = session_accesos()
   try:
     if len(nuevos) != 0:
       for nuevo in nuevos:
@@ -85,4 +80,4 @@ def guardar():
         str(e)
       ]
     }
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
