@@ -34,8 +34,16 @@ def index():
         'items':
 		  [
 		    {
-              'item':'Gestión de Sistemas',
-              'url':'accesos/#/sistema'
+              'item':'Gestión de Menu',
+              'url':'accesos/#/modulo'
+            },
+            {
+              'item':'Gestión de Roles',
+              'url':'accesos/#/rol'
+            },
+            {
+              'item':'Gestión de Permisos',
+              'url':'accesos/#/permiso'
             },
             {
               'item':'Gestión de Usuarios',
