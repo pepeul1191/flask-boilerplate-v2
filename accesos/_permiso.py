@@ -1,25 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from bottle import Bottle, request, HTTPResponse
-from config.models import Permiso
+from flask import Blueprint, request
 from sqlalchemy.sql import select
-from config.middleware import enable_cors, headers, check_csrf
-from config.database import engine, session_db
-from config.constants import constants
+from main.databases import engine_accesos, session_accesos
+from .models import Permiso
+from main.middlewares import check_csrf
 
-permiso_view = Bottle()
+permiso_routes = Blueprint('permiso_routes', __name__)
 
-@permiso_view.route('/listar/<sistema_id>', method='GET')
-@enable_cors
-@headers
+@permiso_routes.route('/accesos/permiso/listar', methods=['GET'])
 @check_csrf
-def listar(sistema_id):
+def listar():
   rpta = None
   status = 200
   try:
-    conn = engine.connect()
-    stmt = select([Permiso]).where(Permiso.sistema_id == sistema_id)
+    conn = engine_accesos.connect()
+    stmt = select([Permiso])
     rs = conn.execute(stmt)
     rpta = [dict(r) for r in conn.execute(stmt)]
   except Exception as e:
@@ -31,22 +28,20 @@ def listar(sistema_id):
       ],
     }
     status = 500
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
-@permiso_view.route('/guardar', method='POST')
-@enable_cors
-@headers
+
+@permiso_routes.route('/accesos/permiso/guardar', methods=['POST'])
 @check_csrf
 def guardar():
   status = 200
-  data = json.loads(request.forms.get('data'))
+  data = json.loads(request.form['data'])
   nuevos = data['nuevos']
   editados = data['editados']
   eliminados = data['eliminados']
-  sistema_id = data['extra']['sistema_id']
   array_nuevos = []
   rpta = None
-  session = session_db()
+  session = session_accesos()
   try:
     if len(nuevos) != 0:
       for nuevo in nuevos:
@@ -54,7 +49,6 @@ def guardar():
         s = Permiso(
           nombre = nuevo['nombre'],
           llave = nuevo['llave'],
-          sistema_id = sistema_id,
         )
         session.add(s)
         session.flush()
@@ -87,4 +81,4 @@ def guardar():
         str(e)
       ]
     }
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status

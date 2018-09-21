@@ -38,12 +38,12 @@ def index():
               'url':'accesos/#/modulo'
             },
             {
-              'item':'Gestión de Roles',
-              'url':'accesos/#/rol'
-            },
-            {
               'item':'Gestión de Permisos',
               'url':'accesos/#/permiso'
+            },
+            {
+              'item':'Gestión de Roles',
+              'url':'accesos/#/rol'
             },
             {
               'item':'Gestión de Usuarios',

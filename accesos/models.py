@@ -28,13 +28,11 @@ class Permiso(Base):
   id = Column(Integer, primary_key=True)
   nombre = Column(String)
   llave = Column(String)
-  sistema_id = Column(Integer, ForeignKey('sistemas.id'))
 
 class Rol(Base):
   __tablename__ = 'roles'
   id = Column(Integer, primary_key=True)
   nombre = Column(String)
-  sistema_id = Column(Integer, ForeignKey('sistemas.id'))
 
 class RolPermiso(Base):
   __tablename__ = 'roles_permisos'
