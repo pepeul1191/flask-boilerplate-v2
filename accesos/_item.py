@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from bottle import Bottle, request, HTTPResponse
-from config.models import Item, VWModuloSubtituloItem
+from flask import Blueprint, request
 from sqlalchemy.sql import select
-from config.middleware import enable_cors, headers, check_csrf
-from config.database import engine, session_db
-from config.constants import constants
+from main.databases import engine_accesos, session_accesos
+from .models import Item, VWModuloSubtituloItem
+from main.middlewares import check_csrf
 
-item_view = Bottle()
+item_routes = Blueprint('item_routes', __name__)
 
-@item_view.route('/listar/<subtitulo_id>', method='GET')
-@enable_cors
-@headers
+@item_routes.route('/accesos/item/listar/<int:subtitulo_id>', methods=['GET'])
 @check_csrf
 def listar(subtitulo_id):
   rpta = None
   status = 200
   try:
-    conn = engine.connect()
+    conn = engine_accesos.connect()
     stmt = select([Item]).where(Item.subtitulo_id == subtitulo_id)
     rs = conn.execute(stmt)
     rpta = [dict(r) for r in conn.execute(stmt)]
@@ -31,22 +28,20 @@ def listar(subtitulo_id):
       ],
     }
     status = 500
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
-@item_view.route('/guardar', method='POST')
-@enable_cors
-@headers
+@item_routes.route('/accesos/item/guardar', methods=['POST'])
 @check_csrf
 def guardar():
   status = 200
-  data = json.loads(request.forms.get('data'))
+  data = json.loads(request.form['data'])
   nuevos = data['nuevos']
   editados = data['editados']
   eliminados = data['eliminados']
   subtitulo_id = data['extra']['subtitulo_id']
   array_nuevos = []
   rpta = None
-  session = session_db()
+  session = session_accesos()
   try:
     if len(nuevos) != 0:
       for nuevo in nuevos:
@@ -87,8 +82,9 @@ def guardar():
         str(e)
       ]
     }
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
+"""
 @item_view.route('/menu', method='GET')
 @enable_cors
 @headers
@@ -129,4 +125,6 @@ def menu():
       ],
     }
     status = 500
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
+
+"""
