@@ -9,7 +9,6 @@ class Modulo(Base):
   nombre = Column(String)
   icono = Column(String)
   url = Column(String)
-  sistema_id = Column(Integer, ForeignKey('sistemas.id'))
 
 class Subtitulo(Base):
   __tablename__ = 'subtitulos'
