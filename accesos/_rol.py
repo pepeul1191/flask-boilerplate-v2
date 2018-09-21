@@ -1,25 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-from bottle import Bottle, request, HTTPResponse
-from config.models import Rol, RolPermiso
+from flask import Blueprint, request
 from sqlalchemy.sql import select
-from config.middleware import enable_cors, headers, check_csrf
-from config.database import engine, session_db
-from config.constants import constants
+from main.databases import engine_accesos, session_accesos
+from .models import Rol, RolPermiso
+from main.middlewares import check_csrf
 
-rol_view = Bottle()
+rol_routes = Blueprint('rol_routes', __name__)
 
-@rol_view.route('/listar/<sistema_id>', method='GET')
-@enable_cors
-@headers
+@rol_routes.route('/accesos/rol/listar', methods=['GET'])
 @check_csrf
-def listar(sistema_id):
+def listar():
   rpta = None
   status = 200
   try:
-    conn = engine.connect()
-    stmt = select([Rol]).where(Rol.sistema_id == sistema_id)
+    conn = engine_accesos.connect()
+    stmt = select([Rol])
     rs = conn.execute(stmt)
     rpta = [dict(r) for r in conn.execute(stmt)]
   except Exception as e:
@@ -31,29 +28,25 @@ def listar(sistema_id):
       ],
     }
     status = 500
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
-@rol_view.route('/guardar', method='POST')
-@enable_cors
-@headers
+@rol_routes.route('/accesos/rol/guardar', methods=['POST'])
 @check_csrf
 def guardar():
   status = 200
-  data = json.loads(request.forms.get('data'))
+  data = json.loads(request.form['data'])
   nuevos = data['nuevos']
   editados = data['editados']
   eliminados = data['eliminados']
-  sistema_id = data['extra']['sistema_id']
   array_nuevos = []
   rpta = None
-  session = session_db()
+  session = session_accesos()
   try:
     if len(nuevos) != 0:
       for nuevo in nuevos:
         temp_id = nuevo['id']
         s = Rol(
           nombre = nuevo['nombre'],
-          sistema_id = sistema_id,
         )
         session.add(s)
         session.flush()
@@ -85,28 +78,26 @@ def guardar():
         str(e)
       ]
     }
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
-@rol_view.route('/permiso/listar/<sistema_id>/<rol_id>', method='GET')
-@enable_cors
-@headers
-def listar(sistema_id, rol_id):
+@rol_routes.route('/accesos/rol/permiso/listar/<rol_id>', methods=['GET'])
+def listar_permiso(rol_id):
   rpta = None
   status = 200
   try:
-    conn = engine.connect()
+    conn = engine_accesos.connect()
     stmt = ("""
       SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe, T.llave AS llave FROM
       (
-        SELECT id, nombre, llave, 0 AS existe FROM permisos WHERE sistema_id = {0}
+        SELECT id, nombre, llave, 0 AS existe FROM permisos
       ) T
       LEFT JOIN
       (
         SELECT P.id, P.nombre,  P.llave, 1 AS existe  FROM permisos P
         INNER JOIN roles_permisos RP ON P.id = RP.permiso_id
-        WHERE RP.rol_id = {1}
+        WHERE RP.rol_id = {0}
       ) P
-      ON T.id = P.id""").format(sistema_id, rol_id)
+      ON T.id = P.id""").format(rol_id)
     rpta = [dict(r) for r in conn.execute(stmt)]
   except Exception as e:
     rpta = {
@@ -117,19 +108,17 @@ def listar(sistema_id, rol_id):
       ],
     }
     status = 500
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
 
-@rol_view.route('/permiso/guardar', method='POST')
-@enable_cors
-@headers
-def guardar():
+@rol_routes.route('/accesos/rol/permiso/guardar', methods=['POST'])
+def guardar_permiso():
   status = 200
-  data = json.loads(request.forms.get('data'))
+  data = json.loads(request.form['data'])
   editados = data['editados']
   rol_id = data['extra']['rol_id']
   array_nuevos = []
   rpta = None
-  session = session_db()
+  session = session_accesos()
   try:
     if len(editados) != 0:
       for editado in editados:
@@ -165,4 +154,4 @@ def guardar():
         str(e)
       ]
     }
-  return HTTPResponse(status = status, body = json.dumps(rpta))
+  return json.dumps(rpta), status
